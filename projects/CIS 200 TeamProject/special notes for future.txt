@@ -1,0 +1,22 @@
+Special Notes:
+
+
+If I solve an equation involving:
+
+*Processing Time/Idle Time ----> (PT/IT)
+*ClockTime/Jobs Completed ---->(CT/JC)
+*AVG Arrival time
+*AVG arrival time for each job
+*AVG processing time 
+*AVG processing time for each job
+*Total clock time (CT) 
+*PT == total processing time
+--> so far I am thinking of having this equation:
+
+	(PT/IT)*(CT/JC)
+
+**see picture from phone for whiteboard image of the line of thinking I had when I thouhgt of this
+
+//if i can solve this equation, then it can be used to solve the ideal number of processors 
+//based on the average process times and avg arrival times of any job data file
+//in doing this, (finding the ideal # of processors) then we can select the most feasible CPU size that is closest to the ideal amount 

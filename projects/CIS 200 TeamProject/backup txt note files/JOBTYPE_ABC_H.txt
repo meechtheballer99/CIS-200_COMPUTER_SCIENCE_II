@@ -1,0 +1,23 @@
+
+
+#ifndef JOBTYPE_ABC_H
+#define JOBTYPE_ABC_H
+
+
+
+struct JobType_ABC
+{
+	char jobType;
+	int arrivalTime;
+	int processingTime;
+	
+	
+
+
+};
+
+
+
+
+
+#endif

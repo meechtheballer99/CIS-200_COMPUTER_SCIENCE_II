@@ -1,0 +1,304 @@
+
+
+//READ FROM FILE class CPP FILE
+#include "ReadFromFile.h"
+#include <vector>
+using namespace std;
+
+
+//
+//Job Type		Arrival Time		Processing Time
+//   A				5 + / -1				3 + / -2
+//   B				10 + / -1				8 + / -2
+//   C				25 + / -1				11 + / -2
+//Note: 
+//5 +/- 1 is 4, 5, 6 --> 4 + rand() % 3
+//Arrival Time is time since the last job of the same Type
+
+
+
+
+
+
+
+
+void ReadFromFile::openingMenu(void) {
+
+
+	cout << "---------------------------------------WELCOME---------------------------------------------\n\n";
+	cout << "The initialization of this program will read and write data to a JobDatabase binary file: 'JobDatabase.dat'.\n";
+	cout << "Below is a snippet of the current database on file for 4150 Jobs (2500 type A, 1200 type B, 450 type C) : \n";
+
+
+
+
+}
+void ReadFromFile::re_initFile_newDataSet(void) {
+
+	int curr_SmallestClockVal = 0; //use this to find the smallest clock value to be written to the file for any specified job type that matches this value
+	int jobCounter_A = 2500; //use this to write jobs to the file until total required number of A jobs have been written
+	int jobCounter_B = 1200; //use this to write jobs to the file until total required number of B jobs have been written
+	int jobCounter_C = 450; //use this to write jobs to the file until total required number of C jobs have been written
+	int clockCounter_JobA = 0; //use this to store the next arrival time for jobA
+	int clockCounter_JobB = 0; //use this to store the next arrival time for jobB
+	int clockCounter_JobC = 0; //use this to store the next arrival time for jobC
+	int assignProcessTime = 0; //use this to assign a processing time to each job written to the file, based on the range of random process times given for the job type
+
+	//open the file and seek to a position that will skip the 'o-position' relative to the sizeof JobType_ABC
+	ofstream JobDatabase_write("JobDatabase.dat", ios::out | ios::binary);  //NOTE:if no file exists, you may not be able to open in binary or using any other addtional modes 
+												 //must open the uncreated file first using only the default constructor (no additional paramters other than ios::out and the file name),
+												 // then close it and reopen (in binary for example) the newly created file. (idk if this is because of a c++ error but it worked as long as i didnt set the int mode (the last parameter)
+	if (!JobDatabase_write.is_open()) {
+		cout << "\nunable to open 'JobDatabase.dat' file.\n";
+	}
+	else { cout << "\n~Random Access File 'JobDatabase.dat' opened successfully~\n"; }
+	JobDatabase_write.seekp(1 * JobType_ABC_ByteSize, ios::beg); //skip the 0-position and start writing jobs in the file at position 1
+
+	JobType_ABC Job  = {nullchar, 0, 0}; //use this data structure object to write data to the file and temporarily store the current values to be written to teh file
+
+	//use below three statements to establish the first set of random values for each job
+	clockCounter_JobA += 4 + rand() % 3;  //rand() % number function gives a psuedo random number in the range 0-2 //so this line of code provived a number 5+/-1 == 4 + (0-2)  --> 4, 5 or 6
+	clockCounter_JobB += 9 + rand() % 3;  //rand() % number function gives a psuedo random number in the range 0-2 //so this line of code provived a number 10+/-1 == 9 + (0-2)  --> 9, 10, or 11
+	clockCounter_JobC += 24 + rand() % 3;  //rand() % number function gives a psuedo random number in the range 0-2 //so this line of code provived a number 25+/-1 == 24 + (0-2)  --> 24, 25, or 26
+
+
+
+	while (jobCounter_A > 0 || jobCounter_B > 0 || jobCounter_C > 0) {//use this to initialize and write all 4150 jobs to the data file //loop will continue until all jobCount value == 0
+
+		curr_SmallestClockVal = clockCounter_JobA;
+		if (curr_SmallestClockVal > clockCounter_JobB) { curr_SmallestClockVal = clockCounter_JobB; }
+		if (curr_SmallestClockVal > clockCounter_JobC) { curr_SmallestClockVal = clockCounter_JobC; }
+		//use the above 3 lines of code to determine the current largest value to assign jobs with and write to the file
+
+		if (clockCounter_JobA == curr_SmallestClockVal && jobCounter_A > 0) {
+			//use this if-statment when clock counter for a specified job matches smallest current clock value and as long as number of jobs written for the specified job type is not at 0 --> if 0, then total required jobs for the type is already written to file
+
+			assignProcessTime = 1 + rand() % 5; //use rand() function to assign value in range 1 + 0-4 --> to produce a value in range 1-5 (Job A Process time == 3 +/- 2)
+			Job = { 'A', clockCounter_JobA,  assignProcessTime}; 
+			JobDatabase_write.write(reinterpret_cast<const char*>(&Job), JobType_ABC_ByteSize); //reinterpret JobType_ABC Job data structure address as a Char address object in order to write data to the file
+			clockCounter_JobA += 4 + rand() % 3;  //increment counter so that it can later be compared again to curr_smallest clock counter value with its new value which will be used for the next A-job arrival
+			jobCounter_A--; //decrement the jobA counter since an A-job arrival has been written to the file
+		}
+		if (clockCounter_JobB == curr_SmallestClockVal && jobCounter_B > 0) {
+			//use this if-statment when clock counter for a specified job matches smallest current clock value and as long as number of jobs written for the specified job type is not at 0 --> if 0, then total required jobs for the type is already written to file
+
+			assignProcessTime = 6 + rand() % 5; //use rand() function to assign value in range 6 + 0-4 --> to produce a value in range 6-10 (Job B Process time == 8 +/- 2)
+			Job = { 'B', clockCounter_JobB,  assignProcessTime };
+			JobDatabase_write.write(reinterpret_cast<const char*>(&Job), JobType_ABC_ByteSize); //reinterpret JobType_ABC Job data structure address as a Char address object in order to write data to the file
+			clockCounter_JobB += 9 + rand() % 3;  //increment counter so that it can later be compared again to curr_smallest clock counter value with its new value which will be used for the next B-job arrival
+			jobCounter_B--; //decrement the jobB counter since a B-job arrival has been written to the file
+		}
+		if (clockCounter_JobC == curr_SmallestClockVal && jobCounter_C > 0) {
+			//use this if-statment when clock counter for a specified job matches smallest current clock value and as long as number of jobs written for the specified job type is not at 0 --> if 0, then total required jobs for the type is already written to file
+
+			assignProcessTime = 9 + rand() % 5; //use rand() function to assign value in range 9 + 0-4 --> to produce a value in range 9-13 (Job C Process time == 11 +/- 2)
+			Job = { 'C', clockCounter_JobC,  assignProcessTime };
+			JobDatabase_write.write(reinterpret_cast<const char*>(&Job), JobType_ABC_ByteSize); //reinterpret JobType_ABC Job data structure address as a Char address object in order to write data to the file
+			clockCounter_JobC += 24 + rand() % 3; //increment counter so that it can now be compared again to curr_smallest clock counter value with its new value which will be used for the next C-job arrival
+			jobCounter_C--; //decrement the jobC counter since a C-job arrival has been written to the file
+		}
+		
+		if (jobCounter_A == 0) { clockCounter_JobA = INT_MAX; }
+		if (jobCounter_B == 0) { clockCounter_JobB = INT_MAX; }
+		if (jobCounter_C == 0) { clockCounter_JobC = INT_MAX; }
+		//use the above 3 lines of code to set the clock counter values to very large values so that they are exlcuded from comparison when the while loop starts and is searching for the smallest value
+	}
+	JobDatabase_write.clear(); //clear stream buffer
+	JobDatabase_write.close(); //close the file
+
+}
+void ReadFromFile::userDecide_re_initFile(void) {
+
+
+	string userChoice;
+	cout << "\n~Program Initialization~\n";
+	cout << "Enter 'yes' to initiate JobDatabase.dat file to a new set of data and launch the program.";
+	cout << "\nEnter 'no' to leave JobDatabase.dat file as is and launch the program.\n" << "User option ('yes' or 'no'): ";
+	cin >> userChoice;
+
+	if (userChoice == "yes") {
+		cout << "\n...User has entered 'yes'....intiating JobDatabase.dat binary file to new data set.....reinitializing file\n\n......launching program...----(abort program to cancel)..\n\n";
+		system("pause");
+		cout << "\n...JobDatabase.dat file reinitialized successfully....\n\n";
+		re_initFile_newDataSet();
+
+
+	}
+	else {
+
+		cout << "\n...User has entered 'no', or user input undetermined...JobDatabase.dat binary file will NOT be reinitialized\n\n......launching program......\n\n";
+		system("pause");
+		fstream testStream("JobDatabase.dat", ios::in | ios::binary | ios::_Nocreate);
+		//use fstream variable if user decides no or undetermined input, that way if file is not created it will still be created
+		if (testStream.is_open()) { cout << "\n~testing file....'JobDatabase.dat' binary file opened successfully...\n\n"; }
+		if (!testStream.is_open()) {
+			cout << "\n...Launch failed...???unable to open 'JobDatabase.dat' file....file does not exist???\n";
+			system("pause");
+			cout << "\n~Would you like the program to create the file 'JobDatabase.dat'? If file is already present but corrupt/undetected, it will be overwritten...~\n";
+			cout << "\nEnter the word 'proceed' to proceed with creating the file and launching the program;\notherwise, program will exit and NO FILE will be created or overwritten...\n";
+			cout << "User Choice: ";
+			userChoice.clear();
+			cin >> userChoice;
+			if (userChoice == "proceed") {
+				cout << "\n\n...File created or corrupt file over written....Opening 'JobDatabase.dat' file and launching program....\n\n";
+				system("pause");
+				re_initFile_newDataSet();
+
+			}
+			else { cout << "\n\n....Program failed to launch...Undefined Program Behavior expected....!!Please Abort Program!!..."; }
+
+			
+		}
+		testStream.clear();
+		testStream.close();
+	}
+}
+void ReadFromFile::displaySnippet_dataFile(void) {
+	int display_SnippetSize = 0;
+	int jobNumber = 0; //use this to display on the table the corresponding job # (note job# is not apart of / a data member in the JobType class, it is merely used here for the display table
+	cout << "\nInput a number (in the range from 0-4150) to select the snippet size of the table to be displayed: ";
+	cin >> display_SnippetSize;
+	display_SnippetSize++; //increment whatever the user inputs since the table starts output at the 0 position which has no data in the file
+	if (cin.peek() == '\n') { cin.ignore(); } //clear the cin stream for future use
+	int outputHeader_menuCounter = 1; //use this counter in order to determine when to output the display table's header so that it is easy for a user to read/identify labels when they scroll down the list
+	JobType_ABC readJob{nullchar, 0, 0};
+	ifstream JobDatabase_read("JobDatabase.dat", ios::in | ios::binary); //No_create flag already set since this is ifstream which is used by default for reading a file (for ofstream, default does not set the No_create flag)
+	if (!JobDatabase_read.is_open()) {
+		cout << "\nunable to open 'JobDatabase.dat' file.\n";
+	}
+	else { cout << "\n~Random Access File 'JobDatabase.dat' opened successfully~\n"; }
+
+	
+	cout << "-Job_Type-" << setw(25) << "-Arrival_Time-" << setw(30) << "-Processing_Time-" << setw(25) << "-Job#-" << endl << endl; //initiate top of table labeling
+
+	JobDatabase_read.seekg(0*JobType_ABC_ByteSize, ios::beg); //use this to start at beggning of file and read the empty 0 position for output so user can see 0 position is not used for data
+	for (int i = 0; i < display_SnippetSize; i++) {
+		
+		if (JobDatabase_read.eof() || JobDatabase_read.peek() == EOF) { //use this to break out of loop if EOF bit is set
+
+			cout << "\n\n...NO MORE DATA TO READ...EOF BIT SET...end of file reached....\n\n";
+			break;
+		}
+		JobDatabase_read.read(reinterpret_cast<char*>(&readJob), JobType_ABC_ByteSize); //read data of given byte_size into readJob struct using a char* pointer
+								//The function has parameters to point to the data with a char* pointer, which is why readJob reference address has to be cast as a char* pointer
+		cout << readJob.jobType << setw(30);
+		cout << readJob.arrivalTime << setw(30);
+		cout << readJob.processingTime << setw(20);
+		cout << jobNumber << endl;
+		cout << "---" << setw(30) << "------------------" << setw(30) << "----------------" << setw(25) << "------------" << endl;
+		jobNumber++;
+		outputHeader_menuCounter++;
+		if (outputHeader_menuCounter % 15 == 0) {//output table header labeling again every 15 lines
+			cout << endl << "-Job_Type-" << setw(25) << "-Arrival_Time-" << setw(30) << "-Processing_Time-" << setw(20) << "-Job#-" << endl << endl; //initiate top of table labeling
+		}
+		
+	}
+
+
+	cout << "\n..~Total number of jobs read from JobDatabase.dat file is: " << jobsReadFromFile() << "~..\n";
+	
+	JobDatabase_read.clear();
+	JobDatabase_read.close(); //clear and close the file stream
+
+
+
+}
+int ReadFromFile::jobsReadFromFile(void){
+
+	int counter_JobsInFile = 0;
+	ifstream JobDatabase_read("JobDatabase.dat", ios::in | ios::binary); //No_create flag already set since this is ifstream which is used by default for reading a file (for ofstream, default does not set the No_create flag)
+	if (!JobDatabase_read.is_open()) {
+		cout << "\nunable to open 'JobDatabase.dat' file.\n";
+	}
+	//else { cout << "\n~Random Access File 'JobDatabase.dat' opened successfully~\n"; }
+	JobDatabase_read.seekg(JobType_ABC_ByteSize, ios::beg); //skip position 0 in file -->seek to beginning of file at the location of the first valid job (position 1) so that we can count total number of jobs written to file in the next while-loop statement
+	
+	while (JobDatabase_read.peek() != EOF) {
+	
+		JobDatabase_read.seekg(JobType_ABC_ByteSize, ios::cur);
+		//cout << JobDatabase_read.tellg(); //used for debugging and testing
+		counter_JobsInFile++;
+	}
+
+	JobDatabase_read.clear();
+	JobDatabase_read.close(); //clear and close the file stream
+
+	return counter_JobsInFile;
+
+}
+void ReadFromFile::AddTo_Queue_FromFile(vector<JobType_ABC>& arrvivalQueue_vector, int& counter_JobsReadFromFile_seekInFile) {
+
+	counter_JobsReadFromFile_seekInFile++; //increment this int variable since upon entering this function we are now executing the reading of the next value in the file into the arrivalQueue vector
+	JobType_ABC newJobFromFile{nullchar, 0, 0}; //create an object of type Job in order to store the next job read from the file into this object so that we can add it to the arrival job vector
+	ifstream JobDatabase_read("JobDatabase.dat", ios::in | ios::binary); //No_create flag already set since this is ifstream which is used by default for reading a file (for ofstream, default does not set the No_create flag)
+	if (!JobDatabase_read.is_open()) {
+		cout << "\nunable to open 'JobDatabase.dat' file.\n";
+	} //open the file
+	//else { cout << "\n~Random Access File 'JobDatabase.dat' opened successfully~\n"; } //check to make sure file is open
+	JobDatabase_read.seekg(counter_JobsReadFromFile_seekInFile * JobType_ABC_ByteSize, ios::beg); //start at beginning of file and then move the read pointer of the ifstream variable to the location of the job to be read using the counter
+	JobDatabase_read.read(reinterpret_cast<char*>(&newJobFromFile), JobType_ABC_ByteSize); //read data of given byte_size into readJob struct using a char* pointer
+
+	arrvivalQueue_vector.insert(arrvivalQueue_vector.begin(), newJobFromFile); //insert new jobs into the queue at the front of queue since processcor will end up taking the job at the end of it's queue (highest element) and process it first
+	totalJobsArrived++; //increment jobs arrived
+	if (newJobFromFile.jobType == 'A') { totalJobsArrived_A++; }
+	if (newJobFromFile.jobType == 'B') { totalJobsArrived_B++; } //use these three statements to update jobType trackers for the job that arrived
+	if (newJobFromFile.jobType == 'C') { totalJobsArrived_C++; }
+
+	//cout << "\n~..1 job has been read from the data file into the arrivalQueue_vector..~...~New size of  arrivalQueue is: " << arrvivalQueue_vector.size() << " ~...\n";
+
+	JobDatabase_read.clear();
+	JobDatabase_read.close(); //clear and close the file stream
+
+}
+
+int ReadFromFile::peekFile_nextJob_arrivalTime(int& counter_JobsReadFromFile_seekInFile) { //pass in the JobCounter from Main--> for this function we only want to use that value to check the next job in the file, and nothing else.
+
+	int arrivalTime = 0;
+	JobType_ABC Job_PeekedFromFile{nullchar, 0, 0}; //create an object of type Job in order to store the next job read from the file into this object so that we can add it to the arrival job vector
+	ifstream JobDatabase_read("JobDatabase.dat", ios::in | ios::binary); //No_create flag already set since this is ifstream which is used by default for reading a file (for ofstream, default does not set the No_create flag)
+	if (!JobDatabase_read.is_open()) {
+		cout << "\nunable to open 'JobDatabase.dat' file.\n";
+	} //open the file
+	//else { cout << "\n~Random Access File 'JobDatabase.dat' opened successfully~\n"; } //check to make sure file is open
+	JobDatabase_read.seekg((counter_JobsReadFromFile_seekInFile + 1) * JobType_ABC_ByteSize, ios::beg); //start at beginning of file and then move the read pointer of the ifstream variable to the location of the job to be read using the counter 
+																										//use +1 since we wish to see the NEXT arrival time in the file, not the current one
+	JobDatabase_read.read(reinterpret_cast<char*>(&Job_PeekedFromFile), JobType_ABC_ByteSize); //read data of given byte_size into readJob struct using a char* pointer
+	arrivalTime = Job_PeekedFromFile.arrivalTime; //set the arrival time of the peeked job equal to arrivalTime integer variable so it can be returned by the function
+
+	JobDatabase_read.clear();
+	JobDatabase_read.close(); //clear and close the file stream
+
+	return arrivalTime;
+
+
+
+}
+int ReadFromFile::userDecide_setNumberOf_CPUs(vector<CPU>& CPU_vector){
+	
+	int userDecision_numCPU = 1; //defualt is 1 CPU; otherwise the program will not run
+
+	cout << "\nPlease select the number of CPUs that you would like to use for this program (default is 1): ";
+	cin >> userDecision_numCPU;
+	if (cin.peek() == '\n') { cin.ignore(); } //clear cin istream buffer
+	cout << "\nYou have selected to use " << userDecision_numCPU << " CPUs for this program.........~Finishing Program Launch~.........\n";
+
+	CPU_vector.resize(userDecision_numCPU); //resize the CPU vector to the size speicified by user so that program will utilize the desired number of CPUs
+
+	if (CPU_vector.size() == userDecision_numCPU) {
+		cout << "\n\n~CPU_vector resized successfully~\n\n\t...Program Launched Successfully...\n\n";
+		system("pause");
+	}
+	else { cout << "~..CPU_vector resize failed..~\n"; }
+
+	return userDecision_numCPU;
+}
+
+
+int ReadFromFile::get_TotalArrivals_A(void) { return totalJobsArrived_A; }
+int ReadFromFile::get_TotalArrivals_B(void) { return totalJobsArrived_B; }
+int ReadFromFile::get_TotalArrivals_C(void) { return totalJobsArrived_C; }
+int ReadFromFile::get_totalArrivals(void) { return totalJobsArrived; }
+
+
+// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
+// Debug program: F5 or Debug > Start Debugging menu

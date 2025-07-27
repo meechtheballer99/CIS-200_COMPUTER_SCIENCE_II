@@ -1,0 +1,163 @@
+// CIS-200-Project1-soloPRJ-DemetriusJohnson.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+/*
+* Author: Demetrius Johnson  --CIS200 UM-DEARBORN --PROF ROBERTMANN
+* Creation Date : 26 Oct 2020
+* Modification Date : 31 Oct 2020
+* Purpose : ***
+*/
+
+#include <iostream>
+#include "myString.h"
+
+using namespace std;
+
+int main()
+{
+ //TESTING//
+
+	cout << "///TEST 1: \n";
+	myString test1; //default constructor
+	cout << "test1 output should be nothing...couting test1:  ___no-output--nullstring "<< test1.getString(); //defualt constructor --> is null so nothing will be output
+
+	cout << "\n\n";
+
+	cout << "///TEST 2: \n";
+	myString test2("stringliteraltest"); //test initializing with string literal.
+	cout << test2.getString();//test initializing with string literal.
+	
+	cout << "\n\n";
+
+	cout << "///TEST 3: \n";
+	string stringtester = "stringtester";
+	myString test3(stringtester); //test initializing with std string
+	test3.printMyString_Screen(); //testing print string to screen function and testing initializing with std string
+
+	cout << "\n\n";
+
+	cout << "///TEST 4: \n";
+	myString test4("hello");
+	myString test5("world");
+	myString test6 = test4 + test5; //test overloaded operator+
+	test6.printMyString_Screen();//test overloaded operator+
+
+	cout << "\n\n";
+
+	cout << "///TEST 5: \n";
+	test1 = "settingstring"; //test ability to set string using operator= and using string literal
+	test1.printMyString_Screen();
+
+	cout << "\n\n";
+
+	cout << "///TEST 6: \n";
+	test1 = stringtester; //test ability to set using a std string using operator=
+	test1.printMyString_Screen();
+
+	cout << "\n\n";
+
+	cout << "///TEST 7: \n";
+	test1 = test4; //test ability to set string using myString and the operator=
+	test1.printMyString_Screen();
+
+	cout << "\n\n";
+
+	cout << "///TEST 8: \n";
+	test1.addEnd(test5); //test ability to add on the end of myString another myString
+	test1.printMyString_Screen();
+
+	cout << "\n\n";
+
+	cout << "///TEST 9: \n";
+	test1.addStart(test2); //test ability to add at the start of mytString another myString
+	test1.printMyString_Screen();
+
+	cout << "\n\n";
+
+	cout << "///TEST 10: \n";
+	cout << test1.getString(); //test ability to getString
+
+	cout << "\n\n";
+
+	cout << "///TEST 11: \n";
+	test1 = test4;
+	cout << test1.compareMyString(test4); //testing if a return 0 will occur since the result should be equal strings
+	
+
+	cout << "\n\n";
+
+	cout << "///TEST 12: \n";
+	cout << test1.compareMyString(test5); //test if a negative integer will return since position of different value is smallest for the calling object
+	
+
+	cout << "\n\n";
+
+	cout << "///TEST 13: \n";
+	cout << test6.compareMyString(test1); //test if a positive integer will return since position of different value is smallest for the passed object, and calling object is= up until when it is greater in size
+
+	cout << "\n\n";
+
+	cout << "///TEST 14: \n";
+	test1.initString(); //testing resetting string to null string
+	test1.printMyString_Screen();
+
+	cout << "\n\n";
+
+	bool testboolean = false; //ran out of time to show that these work but if you trace the boolean variable right from here you can easily see both functions work correctly
+	test1 = "alphabeticstring";
+	testboolean = test1.is_alphabeticString(); //test if bool will return true since test1 is alphabetic string
+	testboolean = test1.is_numericString(); //test if bool will return false since test1 is alphabetic string
+
+	test1 = "-100.3";
+	testboolean = test1.is_alphabeticString(); //test if bool will return false since test1 is numeric string
+	testboolean = test1.is_numericString();//test if bool will return true since test1 is numeric string
+
+	cout << "///TEST 15: \n";
+	myString test7 = test6.partMyString(3, 5); //testing partMyString --> test6 reads helloworld --> test7 should be assigned "llowo"
+	cout << test7.getString();
+
+	cout << "\n\n";
+
+	cout << "///TEST 16: \n";
+	test6.replPartString(test1, 2); //testing replPartString --> "helloworld" should become "he-100.3ld"
+	cout << test6.getString();
+
+	cout << "\n\n";
+
+	cout << "///TEST 17: \n";
+	test6.replWholeString(test2); //testing replWholeString --> test6 should become test2 == "stringliteraltester"
+	test6.printMyString_Screen();
+
+	cout << "\n\n";
+
+	cout << "///TEST 18: \n";
+	test6.setString(test5); //testing setting string with myString --> test6 should be set to "world"
+	test6.printMyString_Screen();
+
+	cout << "\n\n";
+
+	cout << "///TEST 19: \n";
+	test6.setString(stringtester); //testing setting string with a std string --> test6 should be set to "stringtester"
+	test6.printMyString_Screen();
+
+	cout << "\n\n";
+
+	cout << "///TEST 20: \n";
+	cout << test6.sizeOfString(); //test the size function --> should return 12 since "stringtester" is its string and is length 12
+	 
+
+	cout << "\n\n";
+
+	//Note: I worked extremely hard on this project and was unable to finish the main and cout things to a file (although I already know how to do it).
+	//also, I only tested the functions which were assigned to test in MAIN, all the other functions I wrote to get my myString class working neat/efficiently
+	//are already tested because they are integrated in the functionality of all of the functions so I left testing those out of MAIN\
+	//thank you(:
+
+
+
+
+   return 0;
+}
+
+
+

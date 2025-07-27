@@ -1,0 +1,39 @@
+
+//CPU CLASS
+//D Johnson 
+//J Fang
+//12-6-2020
+
+#ifndef CPU_H
+#define CPU_H
+#include "ReadFromFile.h"
+
+
+class CPU
+{
+
+private:
+
+	int CPU_size;
+
+
+
+
+
+
+public:
+
+
+
+
+
+
+	
+
+
+
+
+};
+
+
+#endif 

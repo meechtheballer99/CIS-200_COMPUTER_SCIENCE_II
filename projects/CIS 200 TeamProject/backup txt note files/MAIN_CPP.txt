@@ -1,0 +1,57 @@
+// CIS_200_TEAM14_PRJ.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//Demetrius Johnson 
+//Jingzhou Fang
+
+//special note: We will use vectors for this project; even though a linked list is better to use when you have to delete elements from the container at the front of the list (element 0);
+//however, our vector will remain relatively small and so it will have an affect on the Big 0 time complexity (number of executions) of our project, but not enough in our judgement to use a linked list; we will use the ease of std vector class
+//In the future, we could easily revamp this program and replace any vectors and all vector functionality with a more efficient linked list
+
+
+
+#include "ReadFromFile.h"
+#include "CPU.h"
+#include "JobType_ABC.h"
+using namespace std;
+
+int main()
+{
+
+    int counter_JobsReadFromFile = 0; //use this variable in order to keep track of the number of jobs that has been read from the data file --> this value will be used to manipulate the pointer in a file stream variable
+    vector<JobType_ABC> arrivalQueue_vector; //reading from file into this vector the next jobs that are wating for the matching clock value in order to enter the jobQueue_vector
+    vector<JobType_ABC> jobQueue_vector; //jobs in this queue/vector either match the clock or the clock has already passed their arrival time and thus they are waiting for a processor to be available/freed
+    ReadFromFile RFF;
+   
+    RFF.userDecide_re_initFile();
+    RFF.openingMenu();
+    RFF.displaySnippet_dataFile();
+    
+   
+
+    
+
+
+
+    
+
+
+
+
+}
+
+
+
+
+
+/* //this block is used for testing only***
+   JobType_ABC testJob;
+   ifstream testStream("JobDatabase.dat", ios::in | ios::binary);
+   if (!testStream.is_open()) {
+       cout << "\nunable to open 'JobDatabase.dat' file.\n";
+   }
+   else { cout << "\n~Random Access File 'JobDatabase.dat' opened successfully~\n"; }
+   testStream.seekg(4149*JobType_ABC_ByteSize, ios::beg);
+   testStream.read(reinterpret_cast<char*>(&testJob), JobType_ABC_ByteSize);
+   cout << endl <<  testJob.arrivalTime << endl;
+   cout << testStream.eof() << endl;
+   testStream.close();
+   */
