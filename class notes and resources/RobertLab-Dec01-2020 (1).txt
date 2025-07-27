@@ -1,0 +1,108 @@
+CIS 200 Section 003 - Dec 1, 2020
+
+(1) Sorting
+
+    - Convert an input unsorted list to a sorted list
+    - Basic Approaches
+        * simple implementation and slow excution ( O(n^2))
+          n=10^6,    10^12 steps
+        * Bubble, selection, insertion                             
+    - Advanced Approaches
+        * difficult implmentation and fast execution ( O(n log n))
+          n=10^6,    10^6 * 6=6 * 10^6 steps
+        * quick and merge sort
+
+    - Bubble Sort
+        * Basic idea: We treat the element with the miminum value as
+           the bubble, which is moved from the bottom to the water
+           surface (bottom-up approach).
+
+        * Algorithm (procedures to complete one task)
+            (1) We consider the whole input list as an unsorted region
+            (2) Use a linear search to find the element with the 
+                minimum value in the unsorted region
+            (3) Use pairwise swapping to move the bubble upward to the
+                the top of the unsorted region
+            (4) Repeat steps (2) and (3) till the unsorted region 
+                shrinks to become empty. 
+
+        * example: a pdf file.
+
+        * Coding:   
+
+        * Time Complexity:
+             Rough estimation: n*n steps --> O(n^2)
+             More accurate estimation: 1+2+...+n = (n+1)*(n/2)
+                                     = 0.5 n^2 + 0.5n  --> O(n^2)                                       
+                     1+2+3+...+98+99+100= 101*50=5050
+
+
+     - Selection Sort
+        * Basic idea: We treat the element with the miminum value as
+           the bubble, which is directly swapped between this bubble 
+           element and the first element in the unsorted region.
+
+        * Algorithm (procedures to complete one task)
+            (1) We consider the whole input list as an unsorted region
+            (2) Use a linear search to find the element with the 
+                minimum value in the unsorted region
+            (3) Use only one swap between the bubble and the
+                the top of the unsorted region
+            (4) Repeat steps (2) and (3) till the unsorted region 
+                shrinks to become empty. 
+
+        * example: a pdf file. 
+
+     - Insertion Sort
+        * Basic idea: We consider an input unsorted list as a stack
+           of cards. Each time, we pick one card from this old stack
+           and put it into a new stack with the sorting order 
+           imposed (via a bubble sort). Repeat this process till 
+           the old stack becomes empty. The new stack is a sorted list. 
+
+        * example: a pdf file.
+           use only one array to accomodate both old and new stacks.
+
+     - Quick Sort
+	* Basic idea: We use an idea similar to that of binary search.
+           (divide and conquer). We divide the input list into two 
+          parts: left and right parts. We can't gurantee these two 
+          subparts are sorted; however, all the elements in the left
+          subpart are smaller than the pivot value and all the elements
+          in the right subpart are greater than the pivot value.
+          Then, we can recursively solve the left subpart and right 
+          subpart individually.  
+
+              left part  <    pivot value   <   right part
+
+        * Example: 
+
+        * Algorithm
+           (1) Select a pivot value and determine First and Last
+           (2) Use Rule 1:
+               If value at First < Pivot value, move First to the 
+             right by one position. Repeat this process. 
+           (3) Apply Rule 2:
+               If value at Last > Pivot value, move Last to the 
+             left by one position. Repeat this process.
+           (4) Use Rule 3:
+               If the position of First is to the left of Last, 
+             swap two.
+           (5) Check Rule 4:
+               If position of First > position of Last, stop 
+             moving First and Last; and swap the elements of Last
+             and pivot value. 
+
+       - Merge Sort
+	* Basic idea: Divide and Conquer
+            The whole process consists of two parts:
+             + subdivision
+             + merge           
+   
+
+ 
+
+       
+
+
+

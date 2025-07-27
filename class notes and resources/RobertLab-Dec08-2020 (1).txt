@@ -1,0 +1,189 @@
+Robert's Lab Dec 08, 2020
+
+(1) Pointer
+
+   * one of the most powerful tools you can have in C++.
+     By using pointers, we can directly manipulate the
+     contents at memory addresses. 
+
+   * Background Information:
+
+       int x;  double y;  char z[10];  Student w;
+
+
+
+       &x       &y        z                 &w
+                          &z[0]
+
+   * pointer variables are special variables the value
+     of which is a memory address. 
+
+     Declaration:
+
+       int *p1; double *p2; char *p3; Student *p4;
+
+      p1=&x;    p2=&y;       p3=z;      p4= &w;
+
+      p1=&y;   // it is ok in c++
+
+      cout << *(double *)p1 << endl;
+
+      *p1=10; <==> *(&x)=10; <==> x =10;
+
+   * Applications of pointers:
+
+      + pass by reference
+
+         * Example: swap function
+
+            void swap1(int &x, int &y)
+            {
+               int temp; x=temp; x=y; y=temp;  }
+
+            void swap2(int *x, int *y)
+            {  int tmep; *x=temp; *x=*y; *y=temp; }
+
+            int main()
+            {
+                int a = 1, b=2;
+                swap1(a, b);
+                swap2(&a, &b);
+
+                return 1;
+            }
+
+       + pointer to a struct
+
+           struct Node
+           {
+               int value1;
+               double value2;
+           }a, b;
+
+           Node *p1;
+           a.value1=10; a.value2=3.14;
+           p1 = &a;
+           cout << a.value1 << a.value2 << endl;
+           cout << p1->value1 << p1->value2 << endl;
+
+
+      + pointer to a class
+
+           class Node2
+           {
+               int value1;
+               double value2;
+              public:
+                int get(){ return value1;} 
+                void set(int x, double y)
+                 { value1=x; value2 = y; }
+           }a, b;
+
+           Node2 *p2;
+           a.set(10, 3.14);
+           p2 = &a;
+           cout << a.get() << endl;
+           cout << p2->get() << endl;
+
+      + pointer to a function
+
+        int add(int x, int y)
+        {    return (x+y);     }
+
+        int (*p1)(int, int);
+
+        p1 = add;  // function name itself represents the
+                   // beginning memory address of the
+                   // function
+
+        cout << p1(3, 4) << endl;
+
+      + pointer dor dynamic arrays
+        * dynamic array: the length of the array is 
+           determined at run time
+
+        * 2-d dynamic array:
+           int len1, len2;
+           cout << "Input the lengths for 2-d array:";
+           cin >> len1 >> len2;
+           
+           // allocation of a 2d dynamic array
+           double **x = new double*[len1];
+           for(int i=0; i<len1; i++)
+              x[i] = new double[len2];
+
+           ....
+
+           //deallocation of a 2d dynamic array
+           for(int i=0; i<len1; i++)
+               delete []x[i];
+           delete []x;
+
+
+       * Dynamic binding (i.e., polymorphism)
+          + Three corner stones of Object-Oriented Prog.
+             * data abtraction
+             * inheritance 
+             * polymorphism
+
+          + One important assumption:
+             A pointer variable that points to the base
+            class is compatible to a pointer variable 
+            that points to a derived class. 
+
+          + virtual function:
+            If there is a keyword "virtual" at the
+          beginning of a function defintion, then the 
+          function is a virtual function. The main 
+          purpose of a virtual function is to support
+          dynamic binding. 
+
+          + example:
+
+          + pure virtual function:
+            It is a virtual function that does not have
+            function body. The function body is replaced
+            by "=0"
+
+          + abstract class: If one class contains one
+            pure virtual function, it is an abstract 
+            class. You can't create an instance of an
+            abstract class and each abstract class can
+            be only used as a base class. 
+
+        * void * pointer
+
+            NULL: a constant (=0). In C++, 0 is an 
+           invalid memory address. 
+               int *p = NULL; //p currently points to 
+                              // nowhere
+
+            void * p1; // p1 can point to any data type
+
+            qsort( ...)  // provided by Microsoft
+
+            Example:
+
+        * Doubly-Linked List
+ 
+           struct Node
+           {
+              int value;
+              Node *next;
+              Node *prev;
+           } a, b, c;
+
+           a.value =1; a.next = &b; a.prev=NULL;
+           b.value =2; b.next = &c; b.prev=&a; 
+           c.value=3; c.next=NULL; c.prev = &b;
+
+           a.prev=&c; c.next=&a;  // circular linked list
+           Node *p = &a;
+           while(p != NULL) { ...; p=p->next; } // classic search
+                                                // for linked list
+           
+
+
+
+
+

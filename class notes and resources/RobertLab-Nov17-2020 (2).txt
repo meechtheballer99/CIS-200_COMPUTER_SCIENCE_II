@@ -1,0 +1,161 @@
+CIS 200 Lab, Nov. 17, 2020
+
+(1) Lab 10
+
+    * Data Structures:
+
+        + Array:  a list of elements in one dimension
+             
+            * static array: the length of the array is determined at the compilation
+
+               example 1: int x[10];
+                          float y[10][5];
+
+            * dynamic array: the length of the array is determined at run time
+               example 1: int len1;
+                          cin >> len1;
+                          int *z = new int[len1];  //"new" is an operator in c++
+                                                   // z becomes a dynamic array
+                          for(int i=0; i<len1; i++)
+                             z[i] = i*i;
+
+                          // deallocation
+                          delete []z;   // deallocation of z array. No deallocation
+                                        // would cause memory leak
+
+        + Linked List: a list of elements, in particular for one dimension
+                       It consists of a number of nodes connected by pointers.
+
+             struct Node
+             { 
+                 float value;
+                 Node *next;
+                 Node *prev;
+             }a, b, c;
+
+             a.next = &b; // in c++, we use &variable_name to represent the 
+                          // beginning memory address of each variable. 
+           
+             b.next = &c; c.next = NULL; // NULL=0, which is an invalid memory address
+             c.prev = &b; b.prev = &a; a.prev = NULL; a.value=3.1; b.value=2.3; 
+             c.value = 3.5;                        
+
+         + Comparison between array and linked list
+             * advantage of array: easy access to facilitate binary search
+             * advantage of linked list: easy modification for deletion or addition
+
+         + struct: It is a container, in which we have data members of different 
+                   data types. Q: can we have a function inside a struct? Yes. 
+                   
+                   struct A
+                   { 
+                       int x; 
+                       float y;
+                       void print() { cout << x << y << endl;}
+                   } a, b;
+                   a.x = 10; a.y = 3.1; a.print();
+
+                   A c[10][20];
+                   A *d = new A[len1];
+
+                   for(int i=0; i<len1; i++)
+                   {    d[i].x=i; d[i].y=i*i;   }
+
+                   struct Node2
+                   { 
+                       A value;
+                       Node2 *next;
+                       Node2 *prev;
+                   };
+
+              + Pointer: It is a special type of variables, which contain a memory
+                         address.
+
+                  int x=10;    float y= 3.1;  doubl z= 3.4; Student w; char v[80];
+ 
+
+
+
+
+
+
+                  Rule: In c++, array name or function name itself represents the
+                    beginning memory address of the array or the function. 
+
+                 int *p1 = &x; 
+                 double *p2 = &z;
+
+
+                 x=15;
+                 *p1 = 15;  // *:  dereference: we want to update the value of 
+                            // the variable pointed by p1
+
+                 struct B
+                 {               
+                    int value1;
+                    float value2;
+                 } b1, b2;
+                 b1.value1 = 10; b1.value2 = 3.14;
+                 B *p1 = &b1;
+                 // print out the data members of b1
+                 cout << b1.value1  << b1.value2 << endl;
+
+                 cout << p1->value1 << end;
+
+                 double *p3 = NULL;  // NULL means p3 is pointing to nowhere
+
+                 void *p4;  // a special type of pointers that point to any data type
+                            
+                 void mySwap(void *x, void *y)
+                 {
+
+
+                     switch ...
+                        case 1:
+                          // type casting to a concrete data type
+                            *(int *)x = 20;
+
+                 }
+
+                 In Visual Studio, qsort( ...) is function for quick sort. The 
+                 interface of this qsort() contains a void* pointer variable to sort
+                 an array of any data type.
+
+
+                 template <class T>
+                 class Student
+                 {
+                     T value; 
+                     ...
+                 };
+
+                 int main()
+                 {
+                     Student<int> x;
+                     Student<float> y;
+                     ...
+                 } 
+
+
+       + File I/O
+
+           # include <fstream>  // ifstream and ofstream are two subclasses of fstream
+                                // ifstream:  input file;  ofstream: output file
+
+           ofstream myfile; // file handler
+
+           myfile.open("output.txt");
+
+           for(int i=0; i<100; i++)
+              myfile << value[i] << endl;
+
+           myfile.close();
+
+      + Office Hours:  9am - 10 am Wednesday
+                       8:30am - 9:30 am Thursday
+
+
+           file stream pointers. 
+
+
+ 
