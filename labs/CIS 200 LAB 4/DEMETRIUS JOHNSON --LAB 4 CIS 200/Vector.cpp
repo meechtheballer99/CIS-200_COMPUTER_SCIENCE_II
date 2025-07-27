@@ -1,0 +1,95 @@
+//Header File Definition – override C++ vector definition
+
+#include "Vector.h"
+
+    Vector::Vector() {
+    
+        size = 0;
+        entries = new int[size];
+    
+    
+    }         		// default constructor
+
+
+    Vector::Vector(int s) {
+
+        size = s;
+        entries = new int[size];
+        for (int count = (size-1); count >= 0; count--) { //use for loop in order to set all elements equal to 0
+
+            entries[count] = 0;
+        }
+    
+    
+    }		// makes size = s, 
+                                   //allocates s space
+               //   e.g. entries = new int[size], 
+                                   // makes all entries 0
+    Vector::Vector(const Vector &other) {
+    
+        size = other.size;
+        entries = new int[size];
+
+        for (int count = (size-1); count >= 0; count--) { //use for loop in order to copy all array elements
+
+            entries[count] = other.entries[count];
+        }
+    
+    }
+    // copy constructor
+    // makes a deep copy
+
+
+    Vector::~Vector() { //note to self: pass by reference does not make a copy, thus the destructor is not called for as it would for an object passed by value and thus a new object is created to be used for a copy
+    
+        delete entries; //must specify to destructor that the dynamically allocated memory must be destroyed/reallocated
+
+    }    		// default destructor
+    void Vector::print() {
+    
+        if (size == 0) {
+            
+            cout << "[]\n\n"; }
+        else {
+            cout << "[";
+
+            for (int count = 0; count < size; count++) {
+
+                cout << entries[count] << " ";
+
+            }
+            cout << "\b \b] \n\n"; //move cursor back one line, write a space over next character on screen, and then back space again to start cursor back at 'cleared' location
+        }
+    
+    } 		// Prints out the vector
+
+    void Vector::set(int val, int pos) {
+    
+
+        if (pos < 0 || pos >= size) {
+            cout << "**error: setting value " << val << " at position " << pos << " is out of memory allocation range.**\n\n";
+        }
+
+        else {
+            entries[pos] = val;
+        }
+    
+    
+    
+    }// if 0 <=pos<size
+              //stores val at pos in entries
+              // otherwise
+              //error message 
+   Vector& Vector::operator=(const Vector& other) {
+
+       delete entries; //delete previously allocated memory that was allocated during construction
+       size = other.size;
+       entries = new int[size]; //allocate a new set of memory to entries with the same size as the object passed into the function
+       for (int count = (size - 1); count >= 0; count--) { //use for loop in order to copy all array elements
+
+           entries[count] = other.entries[count];
+       }
+
+       return *this;
+    }
+

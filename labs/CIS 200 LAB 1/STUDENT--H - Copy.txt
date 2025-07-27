@@ -1,0 +1,42 @@
+
+
+#include "student.h"
+#include <sstream>
+
+
+
+student::student(){ //constructor initializer list
+
+	major = "General Studies";
+	creditHrsCompleted = -1;
+	cout << "\n\tConstructor called for major '" << major << "' and hours " << creditHrsCompleted << ".\n";
+
+}
+student::~student() {
+	cout << "\ndestrcutor has been called, object and all subobjects destroyed; memory reallocated successfully\n";
+
+}
+
+
+void student::setMajorAndHrs(string userInputMajor, int userInputHrs) { //defined NOT INLINE per instructions
+	
+	major = userInputMajor;
+	creditHrsCompleted = userInputHrs;
+}
+
+void student::getMajorAndHrsByRef(const string &refMajor, const int &refHrs) {
+
+
+}
+
+string student::PrintMe_MajorAndHrs() {
+	stringstream ss; //will use streamstring to turn creditHrs integer into a string so that I can use addition of strings operands.
+	string creditHrsString;
+
+	ss << creditHrsCompleted;
+	ss >> creditHrsString;
+
+	string PRINTstring = "\nI'm a " + major +" and have completed " + creditHrsString + " credit hours.\n";
+	return PRINTstring;
+}
+

@@ -1,0 +1,111 @@
+/*
+	*Author: Demetrius Johnson
+	*Creation Date: 13 Sept 2020
+	*Modification Date: 13 Sept 2020
+	*Purpose: review CIS 150 by using files, pass by reference, constructors, and destructors
+
+	// LAB 1 - CIS 200
+
+	Question 1
+	-------------------------
+	Program:
+
+Use separate source files and header files to create a class to represent students.
+a.	A student object has attributes of major (string) and credit hours taken (integer).  
+b.	Member functions (methods) are as follows (no additional ones may be created):
+i.	Using a constructor initializer list, create a constructor with default parameter values of “General Studies” and -1, and that displays “\n\tConstructor called for major <major> and hours <hours>\n”, replacing <major> and <hours> with attribute values.
+ii.	individual const get methods (in-line definition) for each attribute
+iii.	a const get method (NOT in-line) that uses pass-by-reference for both parameters and has return-type void
+iv.	one set method (NOT in-line) that sets both attributes
+v.	PrintMe method (NOT in-line) that returns string “I’m a <major> major and have completed <x> credit hours.”, replacing <major> and <x> with the appropriate attribute values
+vi.	Destructor (in-line) that displays “\n\tDestructor called for <major> major.\n”, replacing <major> with the appropriate attribute value
+
+
+
+
+Write a complete program that uses the student class you created and tests its functionality
+b.	Declare a single student object and during declaration initialize it to have major “Astrophysics”; do not provide a value for number of credit hours
+c.	Call the PrintMe method of the single student object and display to the screen/console
+d.	Ask the user for the name of a file to which output should be written
+e.	Declare a vector of 5 objects of student class
+i.	Ask the user for 5 majors and 5 credit hours and assign them to each student in the vector. The credit hours must be verified as non-negative or else get another number. This must be tested in your output.
+ii.	Open the file and write to it using the value returned by PrintMe for every student in your vector
+f.	Explicitly close the output file
+g.	Any other tests you deem appropriate to prove your program works perfectly
+
+In order to properly capture the destructor messages, put a breakpoint on the return statement in main. When the program pauses at that line, press F10 once, capture the output screen as a snippet, then press F5 to finish execution.
+
+
+
+
+*/
+
+#include "student.h"
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main() {
+	string userFileName;
+	ofstream ofs;
+	student studentOBJ("Astrophysics");
+	string tempMajorAssg; //used for printing to file and getbyreference function
+	int tempCreditsAssg; //used for printing to file and getbyreference function
+	studentOBJ.PrintMe_MajorAndHrs();
+
+	cout << "\nPlease input the name of a file to which output should be written(include file extension, or a new file will be created if not found): ";
+	cin >> userFileName;
+	vector<student> studentVector(5);
+	cout << "The program will now ask for the majors and credit hours for 5 students...\n\n";
+	system("pause");
+	cout << endl;
+
+	for (int vecLoop = 0; vecLoop < 5; vecLoop++) {
+
+		string userMajorInput = "General Studies";
+		int userCreditsInput = -1;
+
+		cout << "Input name of the major for student" << vecLoop + 1 << ": "; //do vecloop + 1 to start at student 1 and end at student 5
+		cin >> userMajorInput;
+		cout << "Input the number of credit hours completed for student " << vecLoop +1 << ": ";
+		cin >> userCreditsInput;
+		while (userCreditsInput < 0) {
+			cout << "Please input a number greater than or equal to 0 for user credit hours: ";
+			cin >> userCreditsInput;
+		}
+		studentVector.at(vecLoop).setMajorAndHrs(userMajorInput, userCreditsInput);
+
+	}
+
+	
+	ofs.open(userFileName);		//open data file necessarry to run the program & ensure file is found/opens
+	if (!ofs.is_open()) {
+		cout << "There was a problem accessing the output data file to run this program.\n";
+		cout << "Please ensure the required data file is in the correct file directory.\n";
+		cout << "Program will exit. File not found or corrupt. Thank you.\n";
+		return 0;
+	}
+	
+	ofs << "\n You have selected this output file in the program to record the Major and Credits of 5 students:\n\n";
+	for (int numStuInVector = 0; numStuInVector < studentVector.size(); numStuInVector++) { //remember elements in a vector start at number '0'
+		
+
+
+		studentVector.at(numStuInVector).getMajorAndHrsByRef(tempMajorAssg, tempCreditsAssg);
+		ofs << "Student " << numStuInVector + 1 << " is completing a " << tempMajorAssg << " major and has completed " << tempCreditsAssg << " creditHrs thus far.\n\n";
+	}
+	ofs.close(); //close file after all output has been written to it
+
+	cout << "\n\n\nStudent majors and credit hours has been written to your output file '" << userFileName << "' successfully.\nProgram will now exit...\n\n\n";
+	system("pause");
+
+
+	return 0;
+
+
+}
+
+

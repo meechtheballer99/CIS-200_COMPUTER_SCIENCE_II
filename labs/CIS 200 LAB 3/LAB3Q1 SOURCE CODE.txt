@@ -1,0 +1,72 @@
+/*
+	*Author: Demetrius Johnson
+	*Creation Date: 13 Sept 2020
+	*Modification Date: 13 Sept 2020
+	*Purpose:
+
+	// LAB 1 - CIS 200
+
+	Question 1
+	-------------------------
+	Program:
+
+Use separate source files and header files to create a class to represent students.
+a.	A student object has attributes of major (string) and credit hours taken (integer).  
+b.	Member functions (methods) are as follows (no additional ones may be created):
+i.	Using a constructor initializer list, create a constructor with default parameter values of “General Studies” and -1, and that displays “\n\tConstructor called for major <major> and hours <hours>\n”, replacing <major> and <hours> with attribute values.
+ii.	individual const get methods (in-line definition) for each attribute
+iii.	a const get method (NOT in-line) that uses pass-by-reference for both parameters and has return-type void
+iv.	one set method (NOT in-line) that sets both attributes
+v.	PrintMe method (NOT in-line) that returns string “I’m a <major> major and have completed <x> credit hours.”, replacing <major> and <x> with the appropriate attribute values
+vi.	Destructor (in-line) that displays “\n\tDestructor called for <major> major.\n”, replacing <major> with the appropriate attribute value
+
+
+
+
+Write a complete program that uses the student class you created and tests its functionality
+b.	Declare a single student object and during declaration initialize it to have major “Astrophysics”; do not provide a value for number of credit hours
+c.	Call the PrintMe method of the single student object and display to the screen/console
+d.	Ask the user for the name of a file to which output should be written
+e.	Declare a vector of 5 objects of student class
+i.	Ask the user for 5 majors and 5 credit hours and assign them to each student in the vector. The credit hours must be verified as non-negative or else get another number. This must be tested in your output.
+ii.	Open the file and write to it using the value returned by PrintMe for every student in your vector
+f.	Explicitly close the output file
+g.	Any other tests you deem appropriate to prove your program works perfectly
+
+In order to properly capture the destructor messages, put a breakpoint on the return statement in main. When the program pauses at that line, press F10 once, capture the output screen as a snippet, then press F5 to finish execution.
+
+
+
+
+*/
+
+#include "student.h"
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+//TWO ISSUES:1)  DESTRUCTORS. 2) PASS BY REFERENCE GET FUNCTION, WHAT DO I NEED IT FOR??? HOW DO I USE IT?
+int main() {
+	string userFileName;
+	ifstream ifs;
+
+
+	ifs.open(userFileName);		//open data file necessarry to run the program & ensure file is found/opens
+	if (!ifs.is_open()) {
+		cout << "There was a problem accessing the input data file to run this program.\n";
+		cout << "Please ensure the required data file is in the correct file directory.\n";
+		cout << "Program will exit. File not found or corrupt. Thank you.\n";
+		return 0;
+	}
+
+
+
+
+
+
+
+
+}

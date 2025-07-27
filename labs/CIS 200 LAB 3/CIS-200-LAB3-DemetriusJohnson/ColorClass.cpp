@@ -1,0 +1,62 @@
+/*
+	*Author: Demetrius Johnson
+	*Creation Date: 29 Sept. 2020
+	*Modification Date: 7 Oct. 2020
+	*Purpose: Base class
+*/
+
+
+/*
+1st class: has one private attribute, color, which is a string, and another which is a pointer to an int. One constructor, 
+with a string parameter with default value “Purple”. The constructor will create a new int and assign it to the pointer variable, 
+then give it value    -13. The constructor displays message “Class created with color ccc”, replacing ccc with the color variable. 
+Destructor, which displays message “Class destroyed with color ccc and number nnn”, 
+replacing ccc with the color variable and nnn with the value the pointer points to, and deleting the pointer.  
+Also create appropriate get and set methods for color.  You’ll have to write a copy constructor for the class as well as overloading operator=.  
+Have the copy constructor increase the value the new pointer points to by 1 (only the copy will increase, not the original) and display message “Class created with color ccc and number nnn”, 
+replacing ccc with the color variable and nnn with the value the pointer points to.
+
+*/
+#include <iostream>
+#include <string>
+#include "ColorClass.h"
+using namespace std;
+
+//return a reference in the overload function so that the left-side values can be referenced again to use in a function with multiple = operators.
+ColorClass& ColorClass::operator=(const ColorClass &OriginalObject) {//use by-reference so that a new object is not unnecessarily created and to avoid pointer memory errors
+
+	color = OriginalObject.color; //set the colors equal
+	*intPtr = *OriginalObject.intPtr; //set new ptr location of new, copied object to store the same value as original object.
+	//intPtr will be left alone in this overloaded function because we do not want the memory location of this pointer to equal the pointer of the right side object.
+	return *this;
+} //define overload function for =operator since the object contains a pointer, to ensure memory locations don't overlap
+
+
+ColorClass::ColorClass(const ColorClass &OriginalObject) { //copy constructor
+
+	color = OriginalObject.color; //set the colors equal
+	intPtr = new int; //allocate new memory to the pointer variable
+	*intPtr = *(OriginalObject.intPtr) + 1; //set new ptr location of new, copied object to store the same value as original object and add 1.
+	cout << "\n--ColorClass created with color <" << color << "> and value " << *intPtr << " with intPtr located at " << intPtr << "\n\n";
+}
+
+ColorClass::ColorClass(string userColor) {
+	color = userColor;
+	intPtr = new int;
+	*intPtr = -13;
+	cout << "\n--ColorClass created with color <" << color << "> and value " << *intPtr << " with intPtr located at " << intPtr << "\n\n";
+} // constructor initializer
+
+ColorClass::~ColorClass() { 
+	
+	cout << "~ColorClass destroyed with color <" << color << "> and with value " << *intPtr << "\n";
+	cout << "intPtr allocated memory at " << intPtr << " will also be deleted...\n\n";
+	delete intPtr;
+
+} //destructor
+
+void ColorClass::setColor(string userColor){
+	color = userColor;
+}
+
+string ColorClass::getColor() { return color; }

@@ -1,0 +1,13 @@
+
+ You have selected this output file in the program to record the Major and Credits of 5 students:
+
+Student 1 is completing a MAJOR1 major and has completed 1 creditHrs thus far.
+
+Student 2 is completing a MAJOR2 major and has completed 2 creditHrs thus far.
+
+Student 3 is completing a MAJOR3 major and has completed 3 creditHrs thus far.
+
+Student 4 is completing a MAJOR4 major and has completed 4 creditHrs thus far.
+
+Student 5 is completing a MAJOR5 major and has completed 5 creditHrs thus far.
+

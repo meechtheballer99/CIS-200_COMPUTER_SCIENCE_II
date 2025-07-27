@@ -1,0 +1,41 @@
+/*
+
+2nd class:
+inherits public from 1st class.
+It has private attributes of length and width, both int. One constructor, with int parameters with default values of 3 and 5.
+The constructor displays message “Class created with color ccc, length lll, and width www”, replacing ccc, lll,
+and www with the appropriate variable values. Destructor, which displays message “Class destroyed with color ccc, length lll, and width www”,
+replacing ccc, lll, and www with the appropriate variable values.
+Create appropriate get and set methods for the two attributes.
+Create a PrintMe method that prints “ccc object with lll x www (area = aaa)” replacing ccc, lll,
+and www with the appropriate variable values and aaa with length multiplied by width.
+
+*/
+
+#include <iostream>
+#include <string>
+#include "ColorClass.h"
+using namespace std;
+
+#ifndef LENGTHWIDTHCLASS_H
+#define LENGTHWIDTHCLASS_H
+
+class LengthWidthClass : public ColorClass{
+
+protected:
+	int length, width;
+
+public:
+
+	LengthWidthClass(int l = 3, int w = 5); // constructor initializer / default constructor
+	LengthWidthClass(const LengthWidthClass& OriginalObject); //overload =operator
+	void setLength(int l);
+	void setWidth(int w);
+	int getLength();
+	int getWidth();
+	void PrintMe_all_attr();
+	~LengthWidthClass(); //destructor
+
+};
+
+#endif 
